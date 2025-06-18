@@ -1,0 +1,100 @@
+# Academic Verifier Configuration
+
+# API Configuration
+api:
+  trshr:
+    key: "trr_Y7vrG9F6xY9Dsj6hNumNfa1AauLxyfRSxyGDmd5cQtiq8Apfd9LJvHmewt"
+    base_url: "https://api.trshr.io/v1"
+    timeout: 30
+    max_retries: 3
+  arxiv:
+    base_url: "http://export.arxiv.org/api/query"
+    timeout: 20
+    max_results: 100
+  pubmed:
+    base_url: "https://eutils.ncbi.nlm.nih.gov/entrez/eutils"
+    timeout: 30
+    max_results: 100
+
+# Paper Sources
+sources:
+  - arxiv
+  - pubmed
+  - sciencedirect
+  - springer
+
+# Source-specific settings
+source_settings:
+  arxiv:
+    categories:
+      - cs.AI
+      - cs.CL
+      - cs.LG
+      - stat.ML
+    max_papers: 500
+    date_range: 90  # days
+  pubmed:
+    journals:
+      - "Nature"
+      - "Science"
+      - "Cell"
+      - "PNAS"
+    max_papers: 500
+    date_range: 90  # days
+  sciencedirect:
+    subjects:
+      - "Computer Science"
+      - "Artificial Intelligence"
+      - "Machine Learning"
+    max_papers: 300
+    date_range: 90  # days
+  springer:
+    disciplines:
+      - "Computer Science"
+      - "Artificial Intelligence"
+    max_papers: 300
+    date_range: 90  # days
+
+# Analysis Configuration
+analysis:
+  models:
+    primary: "trshr-academic-v2"
+    fallback: "trshr-standard-v1"
+  thresholds:
+    ai_generated: 0.85
+    hallucination: 0.75
+    misunderstanding: 0.65
+  batch_size: 10
+  max_concurrent: 5
+  features:
+    citation_check: true
+    methodology_analysis: true
+    statistical_validation: true
+    reference_verification: true
+    cross_paper_comparison: true
+
+# Storage Configuration
+storage:
+  papers_dir: "data/papers"
+  cache_dir: "data/cache"
+  reports_dir: "data/reports"
+  cache_ttl: 604800  # 7 days in seconds
+
+# Logging Configuration
+logging:
+  level: "INFO"  # DEBUG, INFO, WARNING, ERROR, CRITICAL
+  file: "logs/academic_verifier.log"
+  max_size: 10485760  # 10 MB
+  backup_count: 5
+  format: "%(asctime)s - %(name)s - %(levelname)s - %(message)s"
+
+# Report Configuration
+reports:
+  formats:
+    - json
+    - html
+    - pdf
+  include_metadata: true
+  include_analysis_details: true
+  include_confidence_scores: true
+  include_recommendations: true
